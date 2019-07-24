@@ -7,7 +7,8 @@ const routes = require('./app/routes/index');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(express.static(`${__dirname}/app/public`));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(`${__dirname}/public`));
 routes(app);
 
 app.listen(config.puerto, () =>{
