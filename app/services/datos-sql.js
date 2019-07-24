@@ -5,7 +5,7 @@ const config = require('../../config');
 const bluebird = require('bluebird');
 
 module.exports = class DatosSql {
-    constructor(pais){
+    constructor(pais) {
         this.pais = pais;
     }
 
@@ -20,7 +20,7 @@ module.exports = class DatosSql {
         return mssql.connect(connectionString);
     }
 
-    async execStoreProcedure(storeProcedure) {        
+    async execStoreProcedure(storeProcedure) {
         return new bluebird((resolve, reject) => {
             let exec = this.connect().then(pool => { return pool.request().execute(storeProcedure); });
             exec.then(result => {
@@ -35,6 +35,13 @@ module.exports = class DatosSql {
     }
 
     async listaFiltros() {
-        return await this.execStoreProcedure("[dbo].[BuscadorFiltros_Lista]");
+        let filtros = [];
+        await this.execStoreProcedure("[dbo].[BuscadorFiltros_Lista]").then(data => {
+            filtros = data;
+        }).catch(error => {
+            console.error(error);
+            filtros = [];
+        });
+        return filtros;
     }
 }

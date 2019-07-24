@@ -12,6 +12,9 @@ module.exports = class Filtros {
     }
 
     async obtenerDatos(){
+        let dataFiltrosSQL = await sql.listaFiltros();        
+        this.params.filtrosSQL = dataFiltrosSQL;
+
         return await elasticsearch.ejecutarBusqueda(this.params);
     }
 }
