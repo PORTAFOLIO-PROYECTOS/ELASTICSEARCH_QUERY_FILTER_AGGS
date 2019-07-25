@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 module.exports = class ElasticsearchQuerys {
     constructor(params) {
@@ -6,10 +6,10 @@ module.exports = class ElasticsearchQuerys {
     }
 
     buscador() {
-        
+
     }
 
-    aggs(){
+    aggs() {
         
     }
 

@@ -36,7 +36,7 @@ module.exports = class DatosSql {
 
     async listaFiltros() {
         let filtros = [];
-        await this.execStoreProcedure("[dbo].[BuscadorFiltros_Lista]").then(data => {
+        await this.execStoreProcedure("[Buscador].[ListaFiltro]").then(data => {
             filtros = data;
         }).catch(error => {
             console.error(error);
