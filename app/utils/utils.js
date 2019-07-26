@@ -22,9 +22,19 @@ module.exports = class Utils {
 
         for (const i in array) {
             const element = array[i];
-            if(element[key] === value) result.push(element);
+            if (element[key] === value) result.push(element);
         }
 
         return result;
+    }
+
+    /**
+     * Devuel el texto convertido a UTF8
+     * @param {string} str - Texto códificado
+     */
+    decodeText(str) {
+        return str.replace(/&#(\d+);/g, function (match, dec) {
+            return String.fromCharCode(dec);
+        });
     }
 };

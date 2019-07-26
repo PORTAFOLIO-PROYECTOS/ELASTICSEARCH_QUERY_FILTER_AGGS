@@ -1,5 +1,6 @@
 'use strict';
 
+const config = require('../../../../config');
 const utilsClass = require('../../utils');
 const utils = new utilsClass();
 
@@ -9,7 +10,29 @@ module.exports = class ElasticsearchQuerys {
     }
 
     buscador() {
-        return this.aggregations();
+        let multiMatch = this.multiMatch();
+        let aggs = this.aggregations();
+
+        return {
+            size: 20,
+            query:{
+                bool:{
+                    must: multiMatch
+                }
+            },
+            aggs
+        }
+    }
+
+    multiMatch() {
+        let texto = utils.decodeText(this.params.textoBusqueda);
+        return [{
+            multi_match: {
+                query: texto,
+                type: "best_fields",
+                fields: config.elasticsearch.query.multiMatch
+            }
+        }];
     }
 
     aggregations() {
