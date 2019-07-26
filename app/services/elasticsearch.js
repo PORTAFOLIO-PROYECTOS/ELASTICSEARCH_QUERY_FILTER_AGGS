@@ -11,7 +11,7 @@ module.exports = class Elasticsearch{
 
     }
 
-    ejecutar(){
+    ejecutar(body){
         let indexName = `${config.elasticsearch.index}_${config.pais}_${config.campania}`;
         let typeName = config.elasticsearch.type;
         return client.search({
@@ -21,10 +21,10 @@ module.exports = class Elasticsearch{
         });
     }
 
-    async ejecutarBusqueda(params){
+    async ejecutarBusquedaFiltro(params){
         let query = new queryClass(params);
-
-        return query.buscador();;
+        return this.ejecutar(query);
+        //return query.buscador();
     }
 
 }
