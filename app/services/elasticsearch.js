@@ -1,6 +1,7 @@
 "use strict";
 
 const config = require('../../config');
+const queryClass = require('../utils/scripts/elasticsearch/buscador');
 const client = require('elasticsearch').Client({
     host: `${config.elasticsearch.host}`
 });
@@ -21,7 +22,9 @@ module.exports = class Elasticsearch{
     }
 
     async ejecutarBusqueda(params){
-        return params;
+        let query = new queryClass(params);
+
+        return query.buscador();;
     }
 
 }
