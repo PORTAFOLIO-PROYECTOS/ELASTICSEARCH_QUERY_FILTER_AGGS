@@ -9,7 +9,7 @@ module.exports = class ElasticsearchQuerys {
         this.params = params;
     }
 
-    buscador() {
+    buscadorFiltro() {
         let multiMatch = this.multiMatch();
         let aggs = this.aggregations();
 

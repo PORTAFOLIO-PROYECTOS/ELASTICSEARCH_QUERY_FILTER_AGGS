@@ -12,7 +12,7 @@ module.exports = class Elasticsearch{
     }
 
     ejecutar(body){
-        let indexName = `${config.elasticsearch.index}_${config.pais}_${config.campania}`;
+        let indexName = `${config.elasticsearch.index}_${config.pais.toLocaleLowerCase()}_${config.campania}`;
         let typeName = config.elasticsearch.type;
         return client.search({
             index: indexName,
@@ -23,7 +23,8 @@ module.exports = class Elasticsearch{
 
     async ejecutarBusquedaFiltro(params){
         let query = new queryClass(params);
-        return this.ejecutar(query);
+        let body = query.buscadorFiltro();
+        return await this.ejecutar(body);
         //return query.buscador();
     }
 
