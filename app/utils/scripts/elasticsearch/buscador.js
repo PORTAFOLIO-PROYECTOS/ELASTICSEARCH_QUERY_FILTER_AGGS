@@ -39,9 +39,10 @@ module.exports = class ElasticsearchQuerys {
 
                     if (comaRange > 0) aggs += ',';
 
-                    aggs += `{ "key": "${item.FiltroNombre}"}`;
+                    aggs += `{ "key": "${item.FiltroNombre}"`;
                     if (item.ValorMinimo > 0) aggs += `, "from": "${item.ValorMinimo}"`;
                     if (item.ValorMaximo > 0) aggs += `, "to": "${item.ValorMaximo}"`;
+                    aggs += '}';
 
                     comaRange++;
                 }
