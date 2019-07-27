@@ -20,14 +20,13 @@ module.exports = class Filtros {
         this.params.filtroOrigen = data.filtroOrigen;
 
         let elasticsearchData = data.elasticsearch; //await elasticsearch.ejecutarBusquedaFiltro(this.params);
-        this.params.filtroElasticsearch = elasticsearchData.aggregations;
         this.params.elasticsearchData = elasticsearchData;
 
         this.params.productos = this.productos();
-        this.params.filtros = this.filtroNormal(true);
+        this.params.filtros = this.filtro(false); // para no perjudicar al app
 
-        let filtroPadreHijo = this.filtroNormal();
-        this.params.filtroNuevo = this.filtroNuevo(filtroPadreHijo);
+        let filtroPadreHijo = this.filtro(true);
+        this.params.filtroNuevo = this.filtroOrdenar(filtroPadreHijo);
 
         let response = new responseClass(this.params).json();
         return response;
@@ -63,15 +62,16 @@ module.exports = class Filtros {
         return resultado;
     }
 
-    filtroNormal(value) {
+    filtro(hijos) {
         let filtroOrigenDistinct = utils.distinctInArray(this.params.filtroOrigen, 'IdSeccion');
-        let filtroOrigenSoloPadre = value ? utils.selectInArray(this.params.filtroOrigen, 'IdPadre', 0) : this.params.filtroOrigen;
+        let filtroOrigenSoloPadre = hijos ? this.params.filtroOrigen : utils.selectInArray(this.params.filtroOrigen, 'IdPadre', 0);
+        let filtrosElasticsearch = this.params.elasticsearchData.aggregations;
         let resultado = [];
 
         for (let i = 0; i < filtroOrigenDistinct.length; i++) {
             const item = filtroOrigenDistinct[i];
             let filtroSeccionOrigen = utils.selectInArray(filtroOrigenSoloPadre, 'IdSeccion', item.IdSeccion); // se selecciona todos los filtros de esa sección
-            let filtroSeccionElasticsearch = this.params.filtroElasticsearch[item.IdSeccion].buckets; // se selecciona los filtros de esa sección en la data de elastic
+            let filtroSeccionElasticsearch = filtrosElasticsearch[item.IdSeccion].buckets; // se selecciona los filtros de esa sección en la data de elastic
             let filtroSeccionRequest = this.params.filtros.find(x => x.NombreGrupo === item.Seccion); // se verifica si ese filtro viene en el request
             let filtroSeccion = [];
 
@@ -98,32 +98,22 @@ module.exports = class Filtros {
         return resultado;
     }
 
-    filtroNuevo(arr) {
+    filtroOrdenar(arr) {
         let resultado = [];
 
-        //let data = this.ordenarFiltroNuevoPadreHijo(arr[2].Opciones, 0);
-
-        arr.forEach(item =>{
-            item.Opciones = this.ordenarFiltroNuevoPadreHijo(item.Opciones, 0);
+        arr.forEach(item => {
+            item.Opciones = this.filtroOrdenarRecursiva(item.Opciones, 0);
             resultado.push(item);
         });
-
-
-        // for (let i = 0; i < arr.length; i++) {
-        //     const item = arr[i];
-            
-        //     this.Opciones = this.ordenarFiltroNuevoPadreHijo(item.Opciones, 0);
-        //     resultado.push(item);
-        // }
 
         return resultado;
     }
 
-    ordenarFiltroNuevoPadreHijo(arr, parent) {
-        var out = []
-        for (var i in arr) {
+    filtroOrdenarRecursiva(arr, parent) {
+        let out = []
+        for (let i in arr) {
             if (arr[i].parent === parent) {
-                var children = this.ordenarFiltroNuevoPadreHijo(arr, arr[i].id)
+                let children = this.filtroOrdenarRecursiva(arr, arr[i].id)
 
                 if (children.length) {
                     arr[i].children = children
