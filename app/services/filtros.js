@@ -92,6 +92,7 @@ module.exports = class Filtros {
             resultado.push({
                 IdSeccion: item.IdSeccion,
                 NombreGrupo: item.Seccion,
+                Tipo: item.Tipo,
                 Opciones: filtroSeccion
             });
         }
