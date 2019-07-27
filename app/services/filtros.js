@@ -24,10 +24,12 @@ module.exports = class Filtros {
         this.params.elasticsearchData = elasticsearchData;
 
         this.params.productos = this.productos();
-        this.params.filtros = this.filtroNormal();
+        this.params.filtros = this.filtroNormal(true);
+
+        let filtroPadreHijo = this.filtroNormal();
+        this.params.filtroNuevo = this.filtroNuevo(filtroPadreHijo);
 
         let response = new responseClass(this.params).json();
-
         return response;
     }
 
@@ -61,35 +63,74 @@ module.exports = class Filtros {
         return resultado;
     }
 
-    filtroNormal() {
-        let filtroOrigenSeccion = utils.distinctInArray(this.params.filtroOrigen, 'IdSeccion');
-        let filtroOrigenSoloPadre = utils.selectInArray(this.params.filtroOrigen, 'IdPadre', 0);
+    filtroNormal(value) {
+        let filtroOrigenDistinct = utils.distinctInArray(this.params.filtroOrigen, 'IdSeccion');
+        let filtroOrigenSoloPadre = value ? utils.selectInArray(this.params.filtroOrigen, 'IdPadre', 0) : this.params.filtroOrigen;
         let resultado = [];
 
-        for (let i = 0; i < filtroOrigenSeccion.length; i++) {
-            const item = filtroOrigenSeccion[i];
-            let filtroSeccionOrigen = utils.selectInArray(filtroOrigenSoloPadre, 'IdSeccion', item.IdSeccion);
-            let filtroSeccionElasticsearch = this.params.filtroElasticsearch[item.IdSeccion].buckets;
-            let filtroSeccionRequest = this.params.filtros.find(x => x.NombreGrupo === item.Seccion);
+        for (let i = 0; i < filtroOrigenDistinct.length; i++) {
+            const item = filtroOrigenDistinct[i];
+            let filtroSeccionOrigen = utils.selectInArray(filtroOrigenSoloPadre, 'IdSeccion', item.IdSeccion); // se selecciona todos los filtros de esa sección
+            let filtroSeccionElasticsearch = this.params.filtroElasticsearch[item.IdSeccion].buckets; // se selecciona los filtros de esa sección en la data de elastic
+            let filtroSeccionRequest = this.params.filtros.find(x => x.NombreGrupo === item.Seccion); // se verifica si ese filtro viene en el request
             let filtroSeccion = [];
 
-            for (let j = 0; j < filtroSeccionOrigen.length; j++) {
+            for (let j = 0; j < filtroSeccionOrigen.length; j++) { // se recorre los filtros de la sección
                 const element = filtroSeccionOrigen[j];
-                let filtro = filtroSeccionElasticsearch.find(x => x.key === element.FiltroNombre);
-                let filtroRequest = !filtroSeccionRequest ? filtroSeccionRequest : filtroSeccionRequest.Opciones.find(x => x.IdFiltro === element.Codigo);
+                let filtro = filtroSeccionElasticsearch.find(x => x.key === element.FiltroNombre); // se seleciona el filtro en la data de elastic 
+                let filtroRequest = filtroSeccionRequest ? filtroSeccionRequest.Opciones.find(x => x.IdFiltro === element.Codigo) : filtroSeccionRequest; // se verifica si ese filtro que viene en el request existe
                 filtroSeccion.push({
                     idFiltro: element.Codigo,
                     nombreFiltro: element.FiltroNombre,
-                    cantidad: !filtro ? 0 : filtro.doc_count,
-                    marcado: !filtroRequest ? false : true
+                    cantidad: filtro ? filtro.doc_count : 0,
+                    marcado: filtroRequest ? true : false,
+                    id: element.IdFiltro,
+                    parent: element.IdPadre
                 });
             }
 
             resultado.push({
+                IdSeccion: item.IdSeccion,
                 NombreGrupo: item.Seccion,
                 Opciones: filtroSeccion
             });
         }
         return resultado;
+    }
+
+    filtroNuevo(arr) {
+        let resultado = [];
+
+        //let data = this.ordenarFiltroNuevoPadreHijo(arr[2].Opciones, 0);
+
+        arr.forEach(item =>{
+            item.Opciones = this.ordenarFiltroNuevoPadreHijo(item.Opciones, 0);
+            resultado.push(item);
+        });
+
+
+        // for (let i = 0; i < arr.length; i++) {
+        //     const item = arr[i];
+            
+        //     this.Opciones = this.ordenarFiltroNuevoPadreHijo(item.Opciones, 0);
+        //     resultado.push(item);
+        // }
+
+        return resultado;
+    }
+
+    ordenarFiltroNuevoPadreHijo(arr, parent) {
+        var out = []
+        for (var i in arr) {
+            if (arr[i].parent === parent) {
+                var children = this.ordenarFiltroNuevoPadreHijo(arr, arr[i].id)
+
+                if (children.length) {
+                    arr[i].children = children
+                }
+                out.push(arr[i])
+            }
+        }
+        return out;
     }
 }
