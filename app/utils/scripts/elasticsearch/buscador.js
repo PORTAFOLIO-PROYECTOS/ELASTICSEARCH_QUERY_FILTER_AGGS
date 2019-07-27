@@ -36,9 +36,9 @@ module.exports = class ElasticsearchQuerys {
     }
 
     aggregations() {
-        if (this.params.filtroDatosSQL.length === 0) return [];
+        if (this.params.filtroOrigen.length === 0) return [];
 
-        let filtros = utils.distinctInArray(this.params.filtroDatosSQL, 'ElasticsearchCampo');
+        let filtros = utils.distinctInArray(this.params.filtroOrigen, 'ElasticsearchCampo');
         let aggs = '{';
         let coma = 0;
 
@@ -52,7 +52,7 @@ module.exports = class ElasticsearchQuerys {
             }
 
             if (element.ElasticsearchOperador === 'range') {
-                let seleccion = utils.selectInArray(this.params.filtroDatosSQL, 'ElasticsearchOperador', 'range');
+                let seleccion = utils.selectInArray(this.params.filtroOrigen, 'ElasticsearchOperador', 'range');
                 let comaRange = 0;
 
                 aggs += `"${element.IdSeccion}": { "range": { "field": "${element.ElasticsearchCampo}", "ranges": [`;

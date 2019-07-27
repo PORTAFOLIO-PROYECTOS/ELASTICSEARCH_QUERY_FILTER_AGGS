@@ -7,6 +7,8 @@ const elasticsearchClass = require('./elasticsearch');
 const elasticsearch = new elasticsearchClass();
 const utilsClass = require('../utils/utils');
 const utils = new utilsClass();
+const data = require('../../files');
+const responseClass = require('../models/filtros/response');
 
 module.exports = class Filtros {
     constructor(params) {
@@ -14,10 +16,80 @@ module.exports = class Filtros {
     }
 
     async obtenerDatos() {
-        //let dataFiltrosSQL = await sql.listaFiltros();        
-        let dataFiltroSQL = [{"IdSeccion":"CAT","Seccion":"Categorías","ElasticsearchCampo":"categorias.keyword","ElasticsearchOperador":"term","IdFiltro":1,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"Fragancias","Codigo":"cat-fragancia","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"CAT","Seccion":"Categorías","ElasticsearchCampo":"categorias.keyword","ElasticsearchOperador":"term","IdFiltro":2,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"Maquillaje","Codigo":"cat-maquillaje","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"CAT","Seccion":"Categorías","ElasticsearchCampo":"categorias.keyword","ElasticsearchOperador":"term","IdFiltro":3,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"Cuidado Personal","Codigo":"cat-cuidado-personal","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"CAT","Seccion":"Categorías","ElasticsearchCampo":"categorias.keyword","ElasticsearchOperador":"term","IdFiltro":4,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"Tratamiento Facial","Codigo":"cat-tratamiento-facial","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"CAT","Seccion":"Categorías","ElasticsearchCampo":"categorias.keyword","ElasticsearchOperador":"term","IdFiltro":5,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"Bijouterie","Codigo":"cat-bijouterie","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"CAT","Seccion":"Categorías","ElasticsearchCampo":"categorias.keyword","ElasticsearchOperador":"term","IdFiltro":6,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"Moda","Codigo":"cat-moda","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"MAR","Seccion":"Marcas","ElasticsearchCampo":"marcas.keyword","ElasticsearchOperador":"term","IdFiltro":8,"IdPadre":0,"Tipo":"inclusive","FiltroNombre":"Ésika","Codigo":"mar-esika","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"MAR","Seccion":"Marcas","ElasticsearchCampo":"marcas.keyword","ElasticsearchOperador":"term","IdFiltro":9,"IdPadre":0,"Tipo":"inclusive","FiltroNombre":"L","Codigo":"mar-lbel","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"MAR","Seccion":"Marcas","ElasticsearchCampo":"marcas.keyword","ElasticsearchOperador":"term","IdFiltro":10,"IdPadre":0,"Tipo":"inclusive","FiltroNombre":"Cyzone","Codigo":"mar-cyzone","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":11,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"Hasta S/. 30.00","Codigo":"pre-0-30","ValorMinimo":0,"ValorMaximo":30.01},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":12,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"S/. 30.01 - S/. 50.00","Codigo":"pre-30-50","ValorMinimo":30.01,"ValorMaximo":50.01},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":13,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"S/. 50.01 - S/. 70.00","Codigo":"pre-50-70","ValorMinimo":50.01,"ValorMaximo":70.01},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":14,"IdPadre":0,"Tipo":"last-inclusive-level","FiltroNombre":"S/. 70.01 a más","Codigo":"pre-70-0","ValorMinimo":70.01,"ValorMaximo":0},{"IdSeccion":"SEC","Seccion":"Secciones","ElasticsearchCampo":"seccion1.keyword","ElasticsearchOperador":"term","IdFiltro":15,"IdPadre":0,"Tipo":"excluded","FiltroNombre":"Gana+ / Ofertas","Codigo":"sec-gana","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"SEC","Seccion":"Secciones","ElasticsearchCampo":"seccion1.keyword","ElasticsearchOperador":"term","IdFiltro":16,"IdPadre":0,"Tipo":"excluded","FiltroNombre":"Catálogo","Codigo":"sec-cat","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"SEC","Seccion":"Secciones","ElasticsearchCampo":"seccion1.keyword","ElasticsearchOperador":"term","IdFiltro":17,"IdPadre":0,"Tipo":"excluded","FiltroNombre":"Expofertas","Codigo":"sec-exp","ValorMinimo":0,"ValorMaximo":0},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":18,"IdPadre":11,"Tipo":"last-inclusive-level","FiltroNombre":"Hasta S/. 10.00","Codigo":"pre-0-10","ValorMinimo":0,"ValorMaximo":10.01},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":19,"IdPadre":11,"Tipo":"last-inclusive-level","FiltroNombre":"S/. 10.01 - S/. 20.00","Codigo":"pre-10-20","ValorMinimo":10.01,"ValorMaximo":20.01},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":20,"IdPadre":11,"Tipo":"last-inclusive-level","FiltroNombre":"S/. 20.01 - S/. 30.00","Codigo":"pre-20-30","ValorMinimo":20.01,"ValorMaximo":30.01},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":21,"IdPadre":18,"Tipo":"last-inclusive-level","FiltroNombre":"Hasta S/. 5.00","Codigo":"pre-0-5","ValorMinimo":0,"ValorMaximo":5.01},{"IdSeccion":"PRE","Seccion":"Precios","ElasticsearchCampo":"precio","ElasticsearchOperador":"range","IdFiltro":22,"IdPadre":18,"Tipo":"last-inclusive-level","FiltroNombre":"S/. 5.01 - S/. 10.00","Codigo":"pre-5-10","ValorMinimo":5.01,"ValorMaximo":10.01}];
-        this.params.filtroDatosSQL = dataFiltroSQL;//.sort((a, b) => (a.Seccion > b.Seccion) ? 1 : ((a.Seccion < b.Seccion) ? -1 : 0));
+        //this.params.filtroOrigen = await sql.listaFiltros();        
+        this.params.filtroOrigen = data.filtroOrigen;
 
-        return await elasticsearch.ejecutarBusquedaFiltro(this.params);
+        let elasticsearchData = data.elasticsearch; //await elasticsearch.ejecutarBusquedaFiltro(this.params);
+        this.params.filtroElasticsearch = elasticsearchData.aggregations;
+        this.params.elasticsearchData = elasticsearchData;
+
+        this.params.productos = this.productos();
+        this.params.filtros = this.filtroNormal();
+
+        let response = new responseClass(this.params).json();
+
+        return response;
+    }
+
+    productos() {
+        let productos = this.params.elasticsearchData;
+        let resultado = [];
+
+        for (let i = 0; i < productos.hits.hits.length; i++) {
+            const item = productos.hits.hits[i];
+            let source = item._source;
+            let image = utils.urlImage(source.imagen, config.pais, source.imagenOrigen, config.campania, source.marcaId);
+
+            resultado.push({
+                cuv: source.cuv,
+                codigoProducto: source.codigoProducto,
+                imagen: image ? image : "no_tiene_imagen.jpg",
+                descripcion: source.descripcion,
+                valorizado: source.valorizado ? source.valorizado : 0,
+                precio: source.precio,
+                marcaId: source.marcaId,
+                tipoPersonalizacion: source.tipoPersonalizacion,
+                codigoEstrategia: source.codigoEstrategia ? source.codigoEstrategia : 0,
+                codigoTipoEstrategia: source.codigoTipoEstrategia ? source.codigoTipoEstrategia : "0",
+                tipoEstrategiaId: source.tipoEstrategiaId ? source.tipoEstrategiaId : 0,
+                limiteVenta: source.limiteVenta ? source.limiteVenta : 0,
+                stovk: true,
+                estrategiaId: source.estrategiaId,
+                SubCampania: source.SubCampania ? true : false
+            });
+        }
+        return resultado;
+    }
+
+    filtroNormal() {
+        let filtroOrigenSeccion = utils.distinctInArray(this.params.filtroOrigen, 'IdSeccion');
+        let filtroOrigenSoloPadre = utils.selectInArray(this.params.filtroOrigen, 'IdPadre', 0);
+        let resultado = [];
+
+        for (let i = 0; i < filtroOrigenSeccion.length; i++) {
+            const item = filtroOrigenSeccion[i];
+            let filtroSeccionOrigen = utils.selectInArray(filtroOrigenSoloPadre, 'IdSeccion', item.IdSeccion);
+            let filtroSeccionElasticsearch = this.params.filtroElasticsearch[item.IdSeccion].buckets;
+            let filtroSeccionRequest = this.params.filtros.find(x => x.NombreGrupo === item.Seccion);
+            let filtroSeccion = [];
+
+            for (let j = 0; j < filtroSeccionOrigen.length; j++) {
+                const element = filtroSeccionOrigen[j];
+                let filtro = filtroSeccionElasticsearch.find(x => x.key === element.FiltroNombre);
+                let filtroRequest = !filtroSeccionRequest ? filtroSeccionRequest : filtroSeccionRequest.Opciones.find(x => x.IdFiltro === element.Codigo);
+                filtroSeccion.push({
+                    idFiltro: element.Codigo,
+                    nombreFiltro: element.FiltroNombre,
+                    cantidad: !filtro ? 0 : filtro.doc_count,
+                    marcado: !filtroRequest ? false : true
+                });
+            }
+
+            resultado.push({
+                NombreGrupo: item.Seccion,
+                Opciones: filtroSeccion
+            });
+        }
+        return resultado;
     }
 }

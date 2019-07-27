@@ -17,5 +17,10 @@ module.exports = {
         CO: 'Server=AWNTS74; Initial Catalog=BelcorpColombia_GANAMAS; User ID=sa; Password=C0n$ult0r@$;',
         CR: 'Server=AWNTS74; Initial Catalog=BelcorpCostaRica_GANAMAS; User ID=sa; Password=C0n$ult0r@$;',
         PE: 'Server=AWNTS74; Initial Catalog=BelcorpPeru_GANAMAS; User ID=sa; Password=C0n$ult0r@$;',
+    },
+    constantes:{
+        urlImagenesSB: "https://cdn1-prd.somosbelcorp.com/",
+        urlImagenesAppCatalogo: "https://s3-sa-east-1.amazonaws.com/appcatalogo/",
+        Matriz: "Matriz"
     }
 }

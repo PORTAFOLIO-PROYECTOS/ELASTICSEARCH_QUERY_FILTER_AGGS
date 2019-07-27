@@ -1,5 +1,7 @@
 "use strict";
 
+const config = require('../../config');
+
 module.exports = class Utils {
     distinctInArray(array, key) {
         let lookup = {};
@@ -36,5 +38,39 @@ module.exports = class Utils {
         return str.replace(/&#(\d+);/g, function (match, dec) {
             return String.fromCharCode(dec);
         });
+    }
+
+    urlImage(nombre, paisISO, tipoOrigen, campania, marcaId) {
+
+        let urlSB = config.constantes.urlImagenesSB,
+            urlAPP = config.constantes.urlImagenesAppCatalogo,
+            matriz = config.constantes.Matriz + "/",
+            origen = parseInt(tipoOrigen);
+
+        if (nombre === undefined || nombre === null) return "no_tiene_imagen.jpg";
+        if (!nombre.length) return "no_tiene_imagen.jpg";
+
+        if (nombre.startsWith("http")) {
+            return nombre;
+        }
+        if (nombre.startsWith("https")) {
+            return nombre;
+        }
+
+        if (origen === 1) {
+            return urlSB + matriz + paisISO + "/" + nombre;
+        }
+
+        if (origen === 2) {
+            let marcas = ["L", "E", "C"];
+
+            let splited = nombre.split("|");
+
+            if (splited.length > 1) {
+                return urlAPP + splited[0] + "/" + splited[1] + "/" + marcas[marcaId - 1] + "/productos/" + splited[2];
+            }
+
+            return urlAPP + paisISO + "/" + campania + "/" + marcas[marcaId - 1] + "/productos/" + nombre;
+        }
     }
 };
