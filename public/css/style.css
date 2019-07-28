@@ -1,0 +1,12 @@
+ul {
+    list-style: none;
+}
+
+a{
+    cursor: pointer;
+    color: royalblue !important;
+}
+
+.tituloSeccion{
+    font-weight: bold;
+}

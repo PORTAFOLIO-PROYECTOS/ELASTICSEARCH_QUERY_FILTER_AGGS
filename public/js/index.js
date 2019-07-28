@@ -23,6 +23,10 @@ const index = (() => {
             $(element.mostrarCajaProducto).html(main({
                 items: data
             }));
+        }),
+
+        asignarTipoSeccion: ((data) => {
+            
         })
     };
 

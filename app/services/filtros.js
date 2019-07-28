@@ -19,8 +19,8 @@ module.exports = class Filtros {
         //this.params.filtroOrigen = await sql.listaFiltros();        
         this.params.filtroOrigen = data.filtroOrigen;
 
-        let elasticsearchData =  await elasticsearch.ejecutarBusquedaFiltro(this.params);
-        //let elasticsearchData = data.elasticsearch;
+        //let elasticsearchData =  await elasticsearch.ejecutarBusquedaFiltro(this.params);
+        let elasticsearchData = data.elasticsearch;
         this.params.elasticsearchData = elasticsearchData;
 
         this.params.productos = this.productos();
@@ -86,7 +86,8 @@ module.exports = class Filtros {
                     cantidad: filtro ? filtro.doc_count : 0,
                     marcado: filtroRequest ? true : false,
                     id: element.IdFiltro,
-                    parent: element.IdPadre
+                    parent: element.IdPadre,
+                    type: item.Tipo
                 });
             }
 
