@@ -32,6 +32,10 @@ module.exports = class ElasticsearchQuerys {
                 type: "best_fields",
                 fields: config.elasticsearch.query.multiMatch
             }
+        },{
+            terms:{
+                "codigoConsultora":["032610099","YYYYYYYYY","000000000"]
+            }
         }];
     }
 

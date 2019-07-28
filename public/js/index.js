@@ -29,7 +29,7 @@ const index = (() => {
     const service = {
         cargarDatos: () => {
             let data = {
-                "textoBusqueda": "",
+                "textoBusqueda": "pack",
                 "filtros": []
             };
 
