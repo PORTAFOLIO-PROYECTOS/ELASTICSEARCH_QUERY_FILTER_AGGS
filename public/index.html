@@ -1,15 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>Filtros</title>
 </head>
-<body>
-    probando página
 
-    <script src="./index.js"></script>
+<body>
+    <div class="container">
+        <h1 class="text-center">-- NUEVO FILTROS --</h1>
+        <hr>
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Filtros</h4>
+                <div id="mostrarFiltro"></div>
+            </div>
+            <div class="col-md-8">
+                <h4>Productos</h4>
+                <div id="mostrarCajaProducto"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jQuery.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/index.js"></script>
+
+    <script id="filtroTreeViewList" type="x-handlebars-template">
+        <li>
+        {{nombreFiltro}}
+        <ul>
+            {{#each children}}
+                {{> list}}
+            {{/each}}
+        </ul>
+        </li>
+    </script>
+
+    <script id="filtroTreeViewMain" type="x-handlebars-template">
+        <ul>
+            {{#each items.filtroNuevo}}
+                <li>{{NombreGrupo}} | {{IdSeccion}} | {{Tipo}}</li>
+                <ul>
+                    {{#each Opciones}}
+                        {{> list}}
+                    {{/each}}
+                </ul>
+            {{/each}}
+        </ul> 
+    </script>
+
+    <script id="cajaProducto" type="x-handlebars-template">
+        <div class="card-columns">
+            {{#each items.productos}}
+            <div class="card">
+                <img class="card-img-top" src="{{imagen}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{descripcion}}</h5>
+                    <p class="card-text">Precio: {{precio}}</p>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </script>
+
+    <script>
+        Handlebars.registerPartial('list', $('#filtroTreeViewList').html());
+    </script>
 </body>
+
 </html>
