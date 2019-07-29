@@ -71,7 +71,7 @@ const index = (() => {
         cargarDatos: (filtro) => {
             let data = {
                 "textoBusqueda": "pack",
-                "filtros": filtro
+                "filtros": filtro || []
             };
 
             fetch('/filtros', {
