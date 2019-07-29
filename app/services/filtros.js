@@ -79,6 +79,7 @@ module.exports = class Filtros {
                 const element = filtroSeccionOrigen[j];
                 let filtro = filtroSeccionElasticsearch.find(x => x.key === element.FiltroNombre); // se seleciona el filtro en la data de elastic 
                 let filtroRequest = filtroSeccionRequest ? filtroSeccionRequest.find(x => x.idFiltro === element.Codigo) : filtroSeccionRequest; // se verifica si ese filtro que viene en el request existe
+
                 filtroSeccion.push({
                     idFiltro: element.Codigo,
                     nombreFiltro: element.FiltroNombre,
@@ -87,8 +88,14 @@ module.exports = class Filtros {
                     id: element.IdFiltro,
                     parent: element.IdPadre,
                     type: item.Tipo,
-                    idSeccion: item.IdSeccion
+                    idSeccion: item.IdSeccion,
+                    //tieneHijo: tieneHijos.length === 0 ? false : true
                 });
+
+                /*let distinct = utils.distinctInArray(filtroSeccion, 'parent');
+                filtroSeccion.forEach(element => {
+
+                });*/
             }
 
             resultado.push({
@@ -113,18 +120,31 @@ module.exports = class Filtros {
     }
 
     filtroOrdenarRecursiva(arr, parent) {
-        let out = []
+        let out = [];
+
         for (let i in arr) {
             if (arr[i].parent === parent) {
                 let children = this.filtroOrdenarRecursiva(arr, arr[i].id)
 
-                if (children.length) {
-                    arr[i].children = children;
-                    arr[i].hasChildren = true;
-                }
+                if (children.length) arr[i].children = children;
+                
                 out.push(arr[i])
             }
         }
         return out;
+    }
+
+    asignarEvento(arr) {
+        arr.forEach(item => {
+
+        });
+    }
+
+    asignarRecursive(arr, type) {
+        let children = false;
+        for (const i in arr) {
+            if (arr[i].children) children = true;
+
+        }
     }
 }

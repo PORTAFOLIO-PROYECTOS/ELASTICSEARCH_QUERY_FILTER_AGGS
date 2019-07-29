@@ -37,14 +37,16 @@
                 <input type="hidden" class="nombreFiltro" value="{{nombreFiltro}}">        
                 <input type="hidden" class="idFiltro" value="{{idFiltro}}">
                 <input type="hidden" class="idSeccion" value="{{idSeccion}}">
+                <input type="hidden" class="type" value="{{type}}">
+                
                 <div class="filtro">
-                    {{#if (eq type 'inclusive')}}
-                    <div class="checkbox">
+                    {{!#if (eq type 'inclusive')}}
+                    <!-- <div class="checkbox">
                         <label><input type="checkbox" value="" {{#if marcado}} checked {{/if}}>{{nombreFiltro}} ({{cantidad}})</label>
-                    </div>
-                    {{else}}
+                    </div> -->
+                    {{!else}}
                     <a>{{nombreFiltro}} ({{cantidad}})</a>
-                    {{/if}}
+                    {{!/if}}
                 </div>
             </div>
             {{#if (eq marcado true)}}
