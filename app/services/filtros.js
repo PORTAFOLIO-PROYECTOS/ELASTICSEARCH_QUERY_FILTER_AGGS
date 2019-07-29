@@ -19,8 +19,8 @@ module.exports = class Filtros {
         //this.params.filtroOrigen = await sql.listaFiltros();        
         this.params.filtroOrigen = data.filtroOrigen;
 
-        let elasticsearchData =  await elasticsearch.ejecutarBusquedaFiltro(this.params);
-        //let elasticsearchData = data.elasticsearch;
+        //let elasticsearchData =  await elasticsearch.ejecutarBusquedaFiltro(this.params);
+        let elasticsearchData = data.elasticsearch;
         this.params.elasticsearchData = elasticsearchData;
 
         this.params.productos = this.productos();
