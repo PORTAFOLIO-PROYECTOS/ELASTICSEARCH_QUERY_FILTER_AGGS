@@ -49,12 +49,14 @@ module.exports = class ElasticsearchQuerys {
 
         for (let j = 0; j < seccionFiltro.length; j++) {
             const item = seccionFiltro[j];
-            let filtroEnSeccion = utils.selectInArray(this.params.filtros, 'idSeccion', item.idSeccion);
+            let filtroEnSeccion = utils.selectInArray(this.params.filtros, 'idSeccion', item.IdSeccion);
 
             for (let i = 0; i < filtroEnSeccion.length; i++) {
                 const element = filtroEnSeccion[i];
+                let terms = [];
+                let ranges = [];
                 let datoFiltro = this.params.filtroOrigen.find(x => x.Codigo === element.idFiltro); // se obtiene todos los datos del filtro
-                let ranges, terms = [];
+                
                 if (datoFiltro) {
                     if (datoFiltro.ElasticsearchOperador === 'term') {
                         terms.push({
@@ -120,7 +122,7 @@ module.exports = class ElasticsearchQuerys {
             }
 
             if (element.ElasticsearchOperador === 'range') {
-                let seleccion = this.params.filtroOrigen.find(x => x.ElasticsearchOperador === element.ElasticsearchOperador);
+                let seleccion = utils.selectInArray(this.params.filtroOrigen, 'ElasticsearchOperador', element.ElasticsearchOperador);
                 let comaRange = 0;
 
                 aggs += `"${element.IdSeccion}": { "range": { "field": "${element.ElasticsearchCampo}", "ranges": [`;
