@@ -52,7 +52,9 @@
             {{#if (eq marcado true)}}
             <ul>
                 {{#each children}}
+                    {{#if (gt cantidad 0)}}
                     {{> list}}
+                    {{/if}}
                 {{/each}}
             </ul>
             {{/if}}
