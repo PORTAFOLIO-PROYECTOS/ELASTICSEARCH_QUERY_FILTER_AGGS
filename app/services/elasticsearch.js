@@ -25,7 +25,7 @@ module.exports = class Elasticsearch{
         let query = new queryClass(params);
         let body = query.buscadorFiltro();
         console.log(JSON.stringify(body));
-        //return await this.ejecutar(body);
+        return await this.ejecutar(body);
         //return query.buscador();
     }
 
