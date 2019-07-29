@@ -49,7 +49,7 @@ module.exports = class ElasticsearchQuerys {
 
         for (let j = 0; j < seccionFiltro.length; j++) {
             const item = seccionFiltro[j];
-            let filtroEnSeccion = this.params.filtros.find(x => x.idSeccion === item.IdSeccion);
+            let filtroEnSeccion = utils.selectInArray(this.params.filtros, 'idSeccion', item.idSeccion);
 
             for (let i = 0; i < filtroEnSeccion.length; i++) {
                 const element = filtroEnSeccion[i];
@@ -93,11 +93,11 @@ module.exports = class ElasticsearchQuerys {
         }
 
         if (must) {
-            resultado.push({
+            resultado = {
                 bool: {
                     must
                 }
-            });
+            };
         }
 
         return resultado;
