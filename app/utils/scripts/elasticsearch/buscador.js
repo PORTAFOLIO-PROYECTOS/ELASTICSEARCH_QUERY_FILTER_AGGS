@@ -118,14 +118,14 @@ module.exports = class ElasticsearchQuerys {
             if (coma > 0) aggs += ',';
 
             if (element.ElasticsearchOperador === 'term') {
-                aggs += `"${element.IdSeccion}":{ "terms": { "field": "${element.ElasticsearchCampo}" }}`;
+                aggs += `"${element.ElasticsearchCampo}":{ "terms": { "field": "${element.ElasticsearchCampo}" }}`;
             }
 
             if (element.ElasticsearchOperador === 'range') {
                 let seleccion = utils.selectInArray(this.params.filtroOrigen, 'ElasticsearchOperador', element.ElasticsearchOperador);
                 let comaRange = 0;
 
-                aggs += `"${element.IdSeccion}": { "range": { "field": "${element.ElasticsearchCampo}", "ranges": [`;
+                aggs += `"${element.ElasticsearchCampo}": { "range": { "field": "${element.ElasticsearchCampo}", "ranges": [`;
 
                 for (let j = 0; j < seleccion.length; j++) {
                     const item = seleccion[j];

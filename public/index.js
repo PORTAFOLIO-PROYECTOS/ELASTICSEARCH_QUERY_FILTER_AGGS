@@ -84,6 +84,8 @@ const index = (() => {
                 .then(res => res.json())
                 .catch(err => console.error('Error:', err))
                 .then(response => {
+
+                    console.log(response);
                     utils.mostrarFiltros(response);
                     utils.mostrarCajaProducto(response);
                 });
