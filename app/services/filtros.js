@@ -24,9 +24,8 @@ module.exports = class Filtros {
         this.params.elasticsearchData = elasticsearchData;
 
         this.params.productos = this.productos();
-        this.params.filtros = this.filtro(false); // para no perjudicar al app
 
-        let filtroPadreHijo = this.filtro(true);
+        let filtroPadreHijo = this.filtro();
         this.params.filtroNuevo = this.filtroOrdenar(filtroPadreHijo);
 
         let response = new responseClass(this.params).json();
@@ -63,23 +62,23 @@ module.exports = class Filtros {
         return resultado;
     }
 
-    filtro(hijos) {
+    filtro() {
         let filtroOrigenDistinct = utils.distinctInArray(this.params.filtroOrigen, 'IdSeccion');
-        let filtroOrigenSoloPadre = hijos ? this.params.filtroOrigen : utils.selectInArray(this.params.filtroOrigen, 'IdPadre', 0);
+        let filtroOrigen = this.params.filtroOrigen;
         let filtrosElasticsearch = this.params.elasticsearchData.aggregations;
         let resultado = [];
 
         for (let i = 0; i < filtroOrigenDistinct.length; i++) {
             const item = filtroOrigenDistinct[i];
-            let filtroSeccionOrigen = utils.selectInArray(filtroOrigenSoloPadre, 'IdSeccion', item.IdSeccion); // se selecciona todos los filtros de esa sección
+            let filtroSeccionOrigen = utils.selectInArray(filtroOrigen, 'IdSeccion', item.IdSeccion); // se selecciona todos los filtros de esa sección
             let filtroSeccionElasticsearch = filtrosElasticsearch[item.IdSeccion].buckets; // se selecciona los filtros de esa sección en la data de elastic
-            let filtroSeccionRequest = this.params.filtros.find(x => x.NombreGrupo === item.Seccion); // se verifica si ese filtro viene en el request
+            let filtroSeccionRequest = utils.selectInArray(this.params.filtros, 'idSeccion', item.IdSeccion);
             let filtroSeccion = [];
 
             for (let j = 0; j < filtroSeccionOrigen.length; j++) { // se recorre los filtros de la sección
                 const element = filtroSeccionOrigen[j];
                 let filtro = filtroSeccionElasticsearch.find(x => x.key === element.FiltroNombre); // se seleciona el filtro en la data de elastic 
-                let filtroRequest = filtroSeccionRequest ? filtroSeccionRequest.Opciones.find(x => x.IdFiltro === element.Codigo) : filtroSeccionRequest; // se verifica si ese filtro que viene en el request existe
+                let filtroRequest = filtroSeccionRequest ? filtroSeccionRequest.find(x => x.idFiltro === element.Codigo) : filtroSeccionRequest; // se verifica si ese filtro que viene en el request existe
                 filtroSeccion.push({
                     idFiltro: element.Codigo,
                     nombreFiltro: element.FiltroNombre,

@@ -9,8 +9,7 @@ module.exports = class Response {
         return {
             total: this.params.elasticsearchData.hits.total,
             productos: this.params.productos,
-            filtros: this.params.filtros,
-            filtroNuevo: this.params.filtroNuevo
+            filtros: this.params.filtroNuevo
         }
     }
 }
