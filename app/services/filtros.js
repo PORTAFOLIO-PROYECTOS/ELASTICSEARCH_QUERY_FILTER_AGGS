@@ -19,8 +19,8 @@ module.exports = class Filtros {
         //this.params.filtroOrigen = await sql.listaFiltros();        
         this.params.filtroOrigen = data.filtroOrigen;
 
-        let elasticsearchData =  await elasticsearch.ejecutarBusquedaFiltro(this.params);
-        //let elasticsearchData = data.elasticsearch;
+        //let elasticsearchData =  await elasticsearch.ejecutarBusquedaFiltro(this.params);
+        let elasticsearchData = data.elasticsearch;
         this.params.elasticsearchData = elasticsearchData;
 
         this.params.productos = this.productos();
@@ -86,7 +86,8 @@ module.exports = class Filtros {
                     marcado: filtroRequest ? true : false,
                     id: element.IdFiltro,
                     parent: element.IdPadre,
-                    type: item.Tipo
+                    type: item.Tipo,
+                    idSeccion: item.IdSeccion
                 });
             }
 
@@ -118,7 +119,8 @@ module.exports = class Filtros {
                 let children = this.filtroOrdenarRecursiva(arr, arr[i].id)
 
                 if (children.length) {
-                    arr[i].children = children
+                    arr[i].children = children;
+                    arr[i].hasChildren = true;
                 }
                 out.push(arr[i])
             }
