@@ -76,7 +76,7 @@ module.exports = class Filtros {
                 dataElastic.push(data[key]);
             }
         });
-console.log(dataElastic);
+
         for (let i = 0; i < filtroOrigenDistinct.length; i++) {
             const item = filtroOrigenDistinct[i];
             let filtroSeccionOrigen = utils.selectInArray(filtroOrigen, 'IdSeccion', item.IdSeccion); // se selecciona todos los filtros de esa sección
@@ -96,14 +96,8 @@ console.log(dataElastic);
                     id: element.IdFiltro,
                     parent: element.IdPadre,
                     type: item.Tipo,
-                    idSeccion: item.IdSeccion,
-                    //tieneHijo: tieneHijos.length === 0 ? false : true
+                    idSeccion: item.IdSeccion
                 });
-
-                /*let distinct = utils.distinctInArray(filtroSeccion, 'parent');
-                filtroSeccion.forEach(element => {
-
-                });*/
             }
 
             resultado.push({
@@ -134,25 +128,11 @@ console.log(dataElastic);
             if (arr[i].parent === parent) {
                 let children = this.filtroOrdenarRecursiva(arr, arr[i].id)
 
+                arr[i].totalChildren = children.length;
                 if (children.length) arr[i].children = children;
-
                 out.push(arr[i])
             }
         }
         return out;
-    }
-
-    asignarEvento(arr) {
-        arr.forEach(item => {
-
-        });
-    }
-
-    asignarRecursive(arr, type) {
-        let children = false;
-        for (const i in arr) {
-            if (arr[i].children) children = true;
-
-        }
     }
 }
