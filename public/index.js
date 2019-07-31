@@ -71,9 +71,9 @@ const index = (() => {
         cargarDatos: (filtro) => {
             let data = {
                 "textoBusqueda": "pack",
-                "filtros": filtro || []
+                "filtro": filtro || []
             };
-
+console.log(JSON.stringify(data));
             fetch('/filtros', {
                     method: 'POST',
                     body: JSON.stringify(data),

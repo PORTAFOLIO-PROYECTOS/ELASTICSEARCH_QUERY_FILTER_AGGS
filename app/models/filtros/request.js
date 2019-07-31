@@ -8,7 +8,7 @@ module.exports = class Request {
     json(){
         return{
             textoBusqueda: this.params.body.textoBusqueda,
-            filtros: this.params.body.filtros
+            filtros: this.params.body.filtro
         }
     }
 }
